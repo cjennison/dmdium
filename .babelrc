@@ -1,5 +1,6 @@
 {
   "presets": [
-    "@vue/app"
+    "@babel/env",
+    ["@babel/preset-stage-2", { "decoratorsLegacy": true }]
   ]
 }

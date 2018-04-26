@@ -7,10 +7,6 @@
             v-card.elevation-12
               v-toolbar(dark)
                 v-toolbar-title Login to your account
-                v-tooltip(right)
-                  v-btn(icon, large, href='https://codepen.io/johnjleider/pen/wyYVVj', target='_blank', slot='activator')
-                    v-icon(large) mdi-codepen
-                  span Codepen
               v-card-text
                 v-form
                   v-text-field(prepend-icon='person', name='login', label='Login', type='text', v-model='loginForm.username')

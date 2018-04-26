@@ -4,14 +4,14 @@
       v-spacer
       router-link(to="app")
         v-btn Sign Up
-      router-link(to="app", v-if="!isLoggedIn")
+      router-link(to="login", v-if="!user")
         v-btn Login
-      router-link(to="app", v-if="isLoggedIn")
+      router-link(to="app", v-if="user")
         v-btn Go to Dashboard
-      v-btn(flat v-if="isLoggedIn" @click="logout") Logout
+      v-btn(flat v-if="user") Logout
     .home
       h1 DMdium
-      //- img(width="600px", src='../assets/dragon-header.png')
+      img(width="600px", src='../assets/dragon-header.png')
       h4 Run the greatest Dungeons and Dragons campaign your party has ever seen.
       h4 Be ready for every turn of their adventure.
 
@@ -21,14 +21,9 @@
 
 export default {
   name: 'home',
-  methods: {
-    logout() {
-      this.$store.dispatch('logout');
-    }
-  },
-  computed: {
-    isLoggedIn() {
-      return this.$store.getters.isLoggedIn;
+  data() {
+    return {
+      user: this.$store.getters.user
     }
   }
 }

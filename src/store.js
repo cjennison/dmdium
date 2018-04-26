@@ -1,47 +1,27 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-const LOGIN = "LOGIN";
-const LOGIN_SUCCESS = "LOGIN_SUCCESS";
-const LOGOUT = "LOGOUT";
+const SET_USER = "SET_USER";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    isLoggedIn: true
+    user: null
   },
   mutations: {
-    [LOGIN] (state) {
-      state.pending = true;
-    },
-    [LOGIN_SUCCESS] (state) {
-      state.isLoggedIn = true;
-      state.pending = false;
-    },
-    [LOGOUT](state) {
-      state.isLoggedIn = false;
+    SET_USER(state, user) {
+      state.user = user;
     }
   },
   actions: {
-    login({ commit }/*, creds*/) {
-      commit(LOGIN);
-      return new Promise(resolve => {
-        setTimeout(() => {
-          // ADD JWT
-          commit(LOGIN_SUCCESS);
-          resolve();
-        }, 1000);
-      });
-    },
-    logout({ commit }) {
-      // REMOVE JWT
-      commit(LOGOUT);
+    login({ COMMIT }, user) {
+      COMMIT(SET_USER, user);
     }
   },
   getters: {
-    isLoggedIn: state => {
-      return state.isLoggedIn
-     }
+    user: state => {
+      return state.user
+    }
   }
-})
+});

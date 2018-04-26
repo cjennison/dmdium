@@ -3,5 +3,20 @@
     "id": 1,
     "first_name": "Chris",
     "last_name": "Jennison"
-  }
+  },
+
+  "campaigns": [
+    {
+      "id": 1,
+      "slug": "into-the-abyss",
+      "name": "Into the Abyss",
+      "description": "Underdark adventure in possible the most incricate political story of all DND"
+    },
+    {
+      "id": 2,
+      "slug": "homebrew-campaign",
+      "name": "My Homebrew Campaign",
+      "description": "I wrote my own campaign."
+    }
+  ]
 }

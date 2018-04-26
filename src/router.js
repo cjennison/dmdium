@@ -4,6 +4,8 @@ import Home from './views/Home.vue'
 import Dashboard from './views/Dashboard.vue'
 import Login from './views/Login.vue'
 
+import CampaignSummary from './views/CampaignSummary.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -19,9 +21,15 @@ export default new Router({
       component: Login
     },
     {
-      path: '/app',
+      path: '/app/:campaign_slug',
       name: 'dashboard',
-      component: Dashboard
+      component: Dashboard,
+      children: [
+        {
+          path: '',
+          component: CampaignSummary
+        }
+      ]
     }
   ]
 })

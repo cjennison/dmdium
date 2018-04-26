@@ -1,26 +1,23 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-const SET_USER = "SET_USER";
-
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user: null
+    user: {
+      "id": 1,
+      "first_name": "Chris",
+      "last_name": "Jennison"
+    }
   },
   mutations: {
-    SET_USER(state, user) {
+    login(state, user) {
       state.user = user;
     }
   },
-  actions: {
-    login({ COMMIT }, user) {
-      COMMIT(SET_USER, user);
-    }
-  },
   getters: {
-    user: state => {
+    getUser: state => {
       return state.user
     }
   }

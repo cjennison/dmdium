@@ -13,11 +13,14 @@
                   v-text-field#password(prepend-icon='lock', name='password', label='Password', type='password', v-model='loginForm.password')
               v-card-actions
                 v-spacer
-                v-btn(to="app") Login
+                v-btn(@click="login") Login
 
 </template>
 
 <script>
+
+import APIService from '@/services/fake-api-service';
+
 export default {
   name: 'login',
   data() {
@@ -26,6 +29,15 @@ export default {
         username: null,
         password: null
       }
+    }
+  },
+  methods: {
+    login() {
+      console.log("logging in", this.loginForm)
+      APIService.login(this.loginForm).then((user) => {
+        this.$store.commit('login', user);
+        this.$router.push('/app/into-the-abyss')
+      })
     }
   }
 }

@@ -74,7 +74,7 @@ export default {
       if (!this.currentCampaign) {
         return null;
       }
-      return `${this.currentCampaign.slug}`;
+      return `/app/${this.currentCampaign.slug}`;
     },
     getCampaigns() {
       APIService.getCampaigns().then((campaigns) => {

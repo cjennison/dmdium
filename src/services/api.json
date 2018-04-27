@@ -18,5 +18,92 @@
       "name": "My Homebrew Campaign",
       "description": "I wrote my own campaign."
     }
+  ],
+
+  "segment_hooks": [
+    {
+      "id": 1,
+      "segment_id": 1,
+      "parent_segment_id": null,
+      "status": "completed"
+    },
+    {
+      "id": 2,
+      "segment_id": 2,
+      "parent_segment_id": 1,
+      "status": "pending"
+    },
+    {
+      "id": 3,
+      "segment_id": 3,
+      "parent_segment_id": 1,
+      "status": "pending"
+    },
+    {
+      "id": 4,
+      "segment_id": 4,
+      "parent_segment_id": 3,
+      "status": "pending"
+    },
+    {
+      "id": 5,
+      "segment_id": 4,
+      "parent_segment_id": 2,
+      "status": "pending"
+    },
+    {
+      "id": 6,
+      "segment_id": 5,
+      "parent_segment_id": 4,
+      "status": "pending"
+    }
+  ],
+
+  "segments": [
+    {
+      "id": 1,
+      "campaign_id": 1,
+      "name": "Imprisoned",
+      "type": "exploration",
+      "synopsis": "The party starts off inside of a prison in the Underdark. They are guarded by wretches and drow warriors. They are surrounded by many other prisoners.",
+      "outcome": null,
+      "state": "completed"
+    },
+    {
+      "id": 2,
+      "campaign_id": 1,
+      "name": "Outbreak",
+      "type": "combat",
+      "synopsis": "The party revolts and attacks the prison guards.",
+      "outcome": null,
+      "state": "pending"
+    },
+    {
+      "id": 3,
+      "campaign_id": 1,
+      "name": "The Matron of the Outpost",
+      "type": "dialogue",
+      "synopsis": "The party continues being prisoners. A drow warrior starts to speak to them about his troubles with a matron.",
+      "outcome": null,
+      "state": "pending"
+    },
+    {
+      "id": 4,
+      "campaign_id": 1,
+      "name": "Escape",
+      "type": "combat",
+      "synopsis": "The party devises an escape plan. They gather the NPCs and make a run for it.",
+      "outcome": null,
+      "state": "pending"
+    },
+    {
+      "id": 5,
+      "campaign_id": 1,
+      "name": "Many Paths",
+      "type": "dialogue",
+      "synopsis": "The party has to decide where to go next. The NPCs offer some suggestions.",
+      "outcome": null,
+      "state": "pending"
+    }
   ]
 }

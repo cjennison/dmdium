@@ -1,5 +1,6 @@
 
 const db = require('./api.json')
+const _ = require('lodash')
 
 module.exports = {
   login() {
@@ -12,6 +13,14 @@ module.exports = {
 
   getCampaigns() {
     return this.makeFlatRequest('campaigns')
+  },
+
+  getSegmentsForCampaign(campaignId) {
+    return new Promise((resolve, reject) => {
+      this.makeFlatRequest('segments').then((segments) => {
+        resolve(_.filter(segments, segment => segment.campaign_id == campaignId))
+      })
+    })
   },
 
   makeFlatRequest(field) {

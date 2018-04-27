@@ -1,8 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import RouterView from './views/RouteView.vue'
+
 import Home from './views/Home.vue'
 import Dashboard from './views/Dashboard.vue'
 import Login from './views/Login.vue'
+import Segments from './views/Segments.vue'
 
 import CampaignSummary from './views/CampaignSummary.vue'
 
@@ -28,6 +31,17 @@ export default new Router({
         {
           path: '',
           component: CampaignSummary
+        },
+        {
+          path: 'segments',
+          name: 'segments',
+          component: RouterView,
+          children: [
+            {
+              path: '',
+              component: Segments
+            }
+          ]
         }
       ]
     }

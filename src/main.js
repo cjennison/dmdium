@@ -19,6 +19,8 @@ router.beforeEach((to, from, next) => {
   next();
 })
 
+console.log(router)
+
 new Vue({
   router,
   store,

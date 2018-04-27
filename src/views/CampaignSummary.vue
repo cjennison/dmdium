@@ -21,7 +21,7 @@
           v-card-title You don't have any segments yet!
           v-card-actions 
             v-btn View
-            v-btn Create New
+            v-btn(@click :to="getCampaignBaseRoute() + '/segments/new'") Create New
       v-flex.pa-3(xs12 sm4)
         v-card
           v-card-title 
@@ -55,6 +55,11 @@ export default {
     campaign (newCampaign) {
       console.log("Campaign Changed")
     }
+  },
+  methods: {
+    getCampaignBaseRoute() {
+      return `/app/${this.campaign.slug}`;
+    },
   }
 }
 </script>

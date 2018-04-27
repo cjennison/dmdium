@@ -7,6 +7,9 @@ import Dashboard from './views/Dashboard.vue'
 import Login from './views/Login.vue'
 import Segments from './views/Segments.vue'
 
+//  Segments
+import NewSegment from './views/segments/NewSegment.vue'
+
 import CampaignSummary from './views/CampaignSummary.vue'
 
 Vue.use(Router)
@@ -40,6 +43,10 @@ export default new Router({
             {
               path: '',
               component: Segments
+            },
+            {
+              path: 'new',
+              component: NewSegment
             }
           ]
         }

@@ -4,14 +4,18 @@ import router from './router'
 import store from './store'
 import Vuetify from 'vuetify'
 import _ from 'lodash'
-import APIService from '@/services/fake-api-service'
 
+import APIService from '@/services/fake-api-service'
 import scope from '@/services/scope';
+
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 
 import './registerServiceWorker'
 import('../node_modules/vuetify/dist/vuetify.min.css')
 
 Vue.use(Vuetify)
+Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 

@@ -8,7 +8,9 @@ import Login from './views/Login.vue'
 import Segments from './views/Segments.vue'
 import Monsters from './views/Monsters.vue'
 import Items from './views/Items.vue'
-
+import Account from './views/Account.vue'
+import Campaigns from './views/Campaigns.vue'
+import AccountManagerDashboard from './views/AccountManagerDashboard.vue';
 
 //  Segments
 import NewSegment from './views/segments/NewSegment.vue'
@@ -20,6 +22,9 @@ import EditMonster from './views/monsters/EditMonster.vue'
 //  Monsters
 import NewItem from './views/items/NewItem.vue'
 import EditItem from './views/items/EditItem.vue'
+
+// Campaigns
+import NewCampaign from './views/campaigns/NewCampaign.vue'
 
 import CampaignSummary from './views/CampaignSummary.vue'
 
@@ -36,6 +41,33 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/account',
+      component: AccountManagerDashboard,
+      children: [
+        {
+          name: 'account',
+          path: '',
+          component: Account
+        }
+      ]
+    },
+    {
+      path: '/campaigns',
+      component: AccountManagerDashboard,
+      children: [
+        {
+          name: 'campaigns',
+          path: '',
+          component: Campaigns
+        },
+        {
+          name: 'new',
+          path: 'new',
+          component: NewCampaign
+        }
+      ]
     },
     {
       path: '/app/:campaign_slug',

@@ -27,15 +27,22 @@
           v-list-tile-content
             v-list-tile-title Items
     v-toolbar(app fixed clipped-left)
-      v-toolbar-side-icon(@click.stop='drawer = !drawer')
+      v-toolbar-side-icon.hidden-lg-and-up(@click.stop='drawer = !drawer')
       v-toolbar-title(v-if='currentCampaign') {{ currentCampaign.name }}
       v-menu(offset-y, v-if='campaigns && campaigns.length > 1')
         v-icon(dark slot="activator") keyboard_arrow_down
         v-list
           v-list-tile(v-for="campaign in campaigns" @click='selectCampaign(campaign)')
             v-list-tile-title {{ campaign.name }}
+          v-list-tile(to="/campaigns")
+            v-list-tile-title.subheader View All #[v-icon arrow_right]
       v-spacer
-      v-toolbar-title {{ user.first_name }} {{ user.last_name }}
+      v-menu(offset-y)
+        v-toolbar-title(dark slot="activator")  {{ user.first_name }} {{ user.last_name }}
+           v-icon(dark slot="activator") keyboard_arrow_down
+        v-list
+          v-list-tile(@click to="/account")
+            v-list-tile-title My Account
     v-content
       v-container(fluid fill-height)
         v-layout

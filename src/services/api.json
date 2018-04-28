@@ -20,6 +20,56 @@
     }
   ],
 
+  "items": [
+    {
+      "id": 1,
+      "campaign_id": 1,
+      "name": "Potion of Healing",
+      "description": "Heals 1d8+2 once. Is consumed on use.",
+      "image_url": "https://img00.deviantart.net/0aba/i/2016/267/4/c/superior_healing_potion_by_matriarchs_haunt-daipsxt.png",
+      "value": "1g"
+    },
+    {
+      "id": 2,
+      "campaign_id": 1,
+      "name": "Gold Staff",
+      "description": "A golden staff. Has no magical power.",
+      "image_url": "https://vignette.wikia.nocookie.net/ninjago/images/8/8d/PicE98A6019CD7639771821A0F885ABDD0B.png/revision/latest?cb=20120925063006",
+      "value": "200g"
+    },
+    {
+      "id": 3,
+      "campaign_id": 1,
+      "name": "A rock",
+      "description": "A regular rock from the ground",
+      "image_url": "https://www.wallingtons.com.au/wp-content/uploads/2014/11/Granite-Rocks.jpg",
+      "value": "0"
+    }
+  ],
+
+  "monsters": [
+    {
+      "id": 1,
+      "campaign_id": 1,
+      "name": "Drow Warrior",
+      "description": "A ruthless warrior of the underdark in service to Lolth",
+      "hitpoints": 20,
+      "hit": "1d20",
+      "damage": "1d6+2",
+      "image_url": "https://pre00.deviantart.net/3f35/th/pre/i/2012/023/f/5/drow_warrior_by_aiderathar-d4ndq1u.jpg"
+    },
+    {
+      "id": 2,
+      "campaign_id": 1,
+      "name": "Hook Horror",
+      "description": "A beaked demon from the underdark equipped with menacing arms",
+      "hitpoints": 75,
+      "hit": "1d20+10",
+      "damage": "2d6+4",
+      "image_url": "https://78.media.tumblr.com/ee4e4238f85130aadfb6247ac42cba52/tumblr_inline_mqox20ed6S1qz4rgp.jpg"
+    }
+  ],
+
   "segment_hooks": [
     {
       "id": 1,

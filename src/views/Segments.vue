@@ -7,6 +7,10 @@
           v-card-title.headline {{ segment.name }}
           hr
           .description.mt-3 {{ segment.synopsis }}
+          v-card-actions
+            v-layout
+              v-flex(xs12)
+            v-btn(flat, :to="getCampaignBaseRoute() + '/segments/new?parent_id=' + segment.id") Create next segment
 </template>
 
 <script>
@@ -30,7 +34,13 @@ export default {
       APIService.getSegmentsForCampaign(this.campaign.id).then((segments) => {
         this.segments = segments;
       })
-    }
+    },
+    getCampaignBaseRoute() {
+      if (!this.campaign) {
+        return null;
+      }
+      return `/app/${this.campaign.slug}`;
+    },
   }
 }
 </script>

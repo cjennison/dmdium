@@ -37,14 +37,12 @@
             span.headline Items
           hr
           v-card-title You don't have any monsters yet!
-          v-card-actions 
+          v-card-actions
             v-btn View
             v-btn Create New
 </template>
 
 <script>
-
-import scope from '@/services/scope';
 
 export default {
   name: 'campaign_summary',
@@ -53,7 +51,7 @@ export default {
   },
   watch: {
     campaign (newCampaign) {
-      console.log("Campaign Changed")
+      console.log("Campaign Changed", newCampaign)
     }
   },
   methods: {

@@ -15,10 +15,42 @@ module.exports = {
     return this.makeFlatRequest('campaigns')
   },
 
+  getMonster(id) {
+    return new Promise((resolve, reject) => {
+      this.makeFlatRequest('monsters').then((monsters) => {
+        resolve(_.find(monsters, monster => monster.id == id))
+      })
+    })
+  },
+
+  getItem(id) {
+    return new Promise((resolve, reject) => {
+      this.makeFlatRequest('items').then((items) => {
+        resolve(_.find(items, item => item.id == id))
+      })
+    })
+  },
+
   getSegmentsForCampaign(campaignId) {
     return new Promise((resolve, reject) => {
       this.makeFlatRequest('segments').then((segments) => {
         resolve(_.filter(segments, segment => segment.campaign_id == campaignId))
+      })
+    })
+  },
+
+  getItemsForCampaign(campaignId) {
+    return new Promise((resolve, reject) => {
+      this.makeFlatRequest('items').then((items) => {
+        resolve(_.filter(items, item => item.campaign_id == campaignId))
+      })
+    })
+  },
+
+  getMonstersForCampaign(campaignId) {
+    return new Promise((resolve, reject) => {
+      this.makeFlatRequest('monsters').then((monsters) => {
+        resolve(_.filter(monsters, monster => monster.campaign_id == campaignId))
       })
     })
   },

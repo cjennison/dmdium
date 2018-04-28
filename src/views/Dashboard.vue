@@ -70,7 +70,7 @@ export default {
     }
   },
   methods: {
-    getCampaignBaseRoute(addition) {
+    getCampaignBaseRoute() {
       if (!this.currentCampaign) {
         return null;
       }

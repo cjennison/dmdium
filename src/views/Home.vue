@@ -2,7 +2,7 @@
   v-app(id="home")
     v-toolbar(class="grey darken-3")
       v-spacer
-      router-link(to="app")
+      router-link(to="register")
         v-btn Sign Up
       router-link(to="login", v-if="!user")
         v-btn Login
@@ -31,7 +31,7 @@
                   v-flex(xs12, md4)
                     v-card.elevation-0.transparent
                       v-card-text.text-xs-center
-                        v-icon.blue--text.text--lighten-2(x-large) color_lens
+                        v-icon.blue--text.text--lighten-2(x-large) assignment
                       v-card-title.layout.justify-center(primary-title)
                         .headline.text-xs-center Campaign Manager
                       v-card-text
@@ -41,7 +41,7 @@
                   v-flex(xs12, md4)
                     v-card.elevation-0.transparent
                       v-card-text.text-xs-center
-                        v-icon.blue--text.text--lighten-2(x-large) flash_on
+                        v-icon.blue--text.text--lighten-2(x-large) build
                       v-card-title.layout.justify-center(primary-title)
                         .headline Entity Library
                       v-card-text
@@ -51,7 +51,7 @@
                   v-flex(xs12, md4)
                     v-card.elevation-0.transparent
                       v-card-text.text-xs-center
-                        v-icon.blue--text.text--lighten-2(x-large) build
+                        v-icon.blue--text.text--lighten-2(x-large) flash_on
                       v-card-title.layout.justify-center(primary-title)
                         .headline.text-xs-center Prepare Faster
                       v-card-text
@@ -62,7 +62,7 @@
           v-parallax(src='https://geekandsundry.com/wp-content/uploads/2016/03/scag_header-970x544.jpg', height='380')
             v-layout(column, align-center, justify-center)
               .headline.white--text.mb-3.text-xs-center Up your Dungeon Master game for free.
-              v-btn.blue.lighten-2.mt-5(dark, large, href='/pre-made-themes')
+              v-btn.blue.lighten-2.mt-5(dark, large, to="register")
                 | Get Started
         section
           v-container(grid-list-xl)

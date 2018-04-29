@@ -5,12 +5,14 @@ import RouterView from './views/RouteView.vue'
 import Home from './views/Home.vue'
 import Dashboard from './views/Dashboard.vue'
 import Login from './views/Login.vue'
+import Register from './views/Register.vue'
 import Segments from './views/Segments.vue'
 import Monsters from './views/Monsters.vue'
 import Items from './views/Items.vue'
 import Account from './views/Account.vue'
 import Campaigns from './views/Campaigns.vue'
 import AccountManagerDashboard from './views/AccountManagerDashboard.vue';
+import CampaignSummary from './views/CampaignSummary.vue'
 
 //  Segments
 import NewSegment from './views/segments/NewSegment.vue'
@@ -26,7 +28,6 @@ import EditItem from './views/items/EditItem.vue'
 // Campaigns
 import NewCampaign from './views/campaigns/NewCampaign.vue'
 
-import CampaignSummary from './views/CampaignSummary.vue'
 
 Vue.use(Router)
 
@@ -35,12 +36,26 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      meta: {
+        bypassAuth: true
+      }
     },
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
+      meta: {
+        bypassAuth: true
+      }
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register,
+      meta: {
+        bypassAuth: true
+      }
     },
     {
       path: '/account',

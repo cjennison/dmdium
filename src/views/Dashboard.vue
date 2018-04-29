@@ -38,7 +38,9 @@
             v-list-tile-title.subheader View All #[v-icon arrow_right]
       v-spacer
       v-menu(offset-y)
-        v-toolbar-title(dark slot="activator")  {{ user.first_name }} {{ user.last_name }}
+        v-toolbar-title(dark slot="activator") 
+          .firstlast(v-if='user.first_name || user.last_name') {{ user.first_name }} {{ user.last_name }}
+          .email(v-else) {{ user.email }}
            v-icon(dark slot="activator") keyboard_arrow_down
         v-list
           v-list-tile(@click to="/account")
@@ -73,7 +75,7 @@ export default {
   },
   computed: {
     user() {
-      return this.$store.getters.getUser
+      return scope.current_user
     }
   },
   methods: {

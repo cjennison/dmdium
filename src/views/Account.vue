@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import scope from '@/services/scope'
+
 export default {
   name: 'user_account',
   created() {
@@ -32,15 +34,12 @@ export default {
   },
   computed: {
     user() {
-      return this.$store.getters.getUser;
+      return scope.current_user;
     }
   },
   methods: {
     save() {
 
-    },
-    goBack() {
-      this.$router.go(-1)
     }
   }
 }

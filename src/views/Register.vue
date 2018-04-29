@@ -1,32 +1,31 @@
 <template lang="pug">
-  v-app#login(dark)
+  v-app#register(dark)
     v-content
       v-container(fluid, fill-height, dark)
         v-layout(align-center, justify-center)
           v-flex(xs12, sm8, md4)
             v-card.elevation-12
               v-toolbar(dark)
-                v-toolbar-title Login to your account
+                v-toolbar-title Create a New Account
               v-card-text
                 v-form
-                  v-text-field(prepend-icon='person', name='login', label='Login', type='text', v-model='loginForm.email')
-                  v-text-field#password(prepend-icon='lock', name='password', label='Password', type='password', v-model='loginForm.password')
+                  v-text-field(prepend-icon='person', name='email', label='Email', type='email', v-model='registerForm.email')
+                  v-text-field#password(prepend-icon='lock', name='password', label='Password', type='password', v-model='registerForm.password')
               v-card-actions
                 v-spacer
-                v-btn(@click="login") Login
+                v-btn(@click="login") Signup
 
 </template>
 
 <script>
 
 import { store, configureStore } from '@/services/HttpService.js';
-import AuthManager from '@/services/auth-manager';
 
 export default {
-  name: 'login',
+  name: 'register',
   data() {
     return {
-      loginForm: {
+      registerForm: {
         email: null,
         password: null
       }
@@ -34,8 +33,11 @@ export default {
   },
   methods: {
     login() {
-      store.create('auth', this.loginForm, {
-        endpoint: 'auth/sign_in',
+      store.create('auth', { 
+        email: this.registerForm.email,
+        password: this.registerForm.password,
+        password_confirmation: this.registerForm.password_confirmation
+      }, {
         deserialize(mapper, response, opts) {
           delete opts.deserialize
           AuthManager.setStoredAuth(response.headers['access-token'], response.headers['client'], response.headers['uid'])

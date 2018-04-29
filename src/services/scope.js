@@ -1,14 +1,16 @@
 class ScopeObject {
-  get auth_token() {
-    return this._auth_token
+  get current_user() {
+    return this._current_user
   }
-  set auth_token(token) {
-    this._auth_token = JSON.parse(token)
+
+  set current_user(user) {
+    this._current_user = user
   }
 
   get current_campaign() {
     return this._current_campaign
   }
+  
   set current_campaign(campaign) {
     this._current_campaign = campaign
   }

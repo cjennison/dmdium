@@ -5,6 +5,8 @@
         v-toolbar(dark)
           v-toolbar-title Account Settings
         v-card-text
+          v-alert(type="info" value="true") Warning: For security, changing settings here will log you out. You will need to log back in after saving.
+          v-divider
           v-form
             v-layout
               v-flex.pa-1(xs6)
@@ -20,6 +22,7 @@
 
 <script>
 import scope from '@/services/scope'
+import { store } from '@/services/HttpService'
 
 export default {
   name: 'user_account',
@@ -39,7 +42,14 @@ export default {
   },
   methods: {
     save() {
-
+      store.update('user', this.user.id, {
+        user: this.accountForm
+      }).then((user) => {
+        this.$router.push('/login')
+        scope.current_user = user
+      }).catch((err) => {
+        console.warn(err)
+      })
     }
   }
 }

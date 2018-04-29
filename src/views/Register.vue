@@ -19,7 +19,9 @@
 
 <script>
 
+import scope from '@/services/scope'
 import { store, configureStore } from '@/services/HttpService.js';
+import AuthManager from '@/services/auth-manager';
 
 export default {
   name: 'register',
@@ -42,15 +44,16 @@ export default {
           delete opts.deserialize
           AuthManager.setStoredAuth(response.headers['access-token'], response.headers['client'], response.headers['uid'])
         }
-      }).then((result) => {
+      }).then((user) => {
         const auth = AuthManager.getStoredAuth();
         if (auth.accessToken && auth.client) {
           configureStore({
             'access-token': auth.accessToken,
             'client': auth.client,
-            'uid': result.email
+            'uid': user.data.email
           })
           this.$router.push('/campaigns')
+          scope.current_user = user.data
         }
       }).catch((err) => {
         console.warn(err)

@@ -36,6 +36,9 @@ router.beforeEach((to, from, next) => {
         }).then((result) => {
           scope.current_user = result.data
           next()
+        }).catch((err) => {
+          console.warn(err)
+          next('/login')
         })
       }
     } else {

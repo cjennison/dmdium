@@ -49,6 +49,7 @@ export default {
             'uid': result.email
           })
           this.$router.push('/campaigns')
+          scope.current_user = result
         }
       }).catch((err) => {
         console.warn(err)

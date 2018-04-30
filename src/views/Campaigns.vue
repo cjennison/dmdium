@@ -18,7 +18,8 @@
 </template>
 
 <script>
-import APIService from '@/services/fake-api-service';
+import { store, getHttpAdapter } from '@/services/HttpService';
+import scope from '@/services/scope';
 
 export default {
   name: 'user_account',
@@ -36,9 +37,14 @@ export default {
       this.$router.go(-1)
     },
     getCampaigns() {
-      APIService.getCampaigns().then((campaigns) => {
-        this.campaigns = campaigns
+      store.findAll('campaign', {}, {
+        basePath: getHttpAdapter().resourceBasePath('users', scope.current_user.id),
+        force: true
+      }).then((campaigns) => {
+        this.campaigns = campaigns;
         this.loading = false
+      }).catch((error) => {
+        console.warn(error)
       })
     }
   }

@@ -12,7 +12,7 @@ import('../node_modules/vuetify/dist/vuetify.min.css')
 
 import AuthManager from '@/services/auth-manager'
 import scope from '@/services/scope'
-import { store } from '@/services/HttpService'
+import { store, configureStore } from '@/services/HttpService'
 
 Vue.use(Vuetify)
 Vue.use(ElementUI)
@@ -23,6 +23,12 @@ router.beforeEach((to, from, next) => {
   if (!to.meta.bypassAuth) {
     const auth = AuthManager.getStoredAuth();
     if (auth.accessToken && auth.client && auth.uid) {
+      configureStore({
+        'access-token': auth.accessToken,
+        'client': auth.client,
+        'uid': auth.uid
+      })
+
       if (scope.current_user) {
         next()
       } else {
@@ -38,6 +44,7 @@ router.beforeEach((to, from, next) => {
           next()
         }).catch((err) => {
           console.warn(err)
+          console.log("Token Validation Failed")
           next('/login')
         })
       }

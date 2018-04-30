@@ -7,7 +7,8 @@
 
 <script>
 
-import CampaignForm from '@/components/campaigns/CampaignForm'
+import { store, getHttpAdapter } from '@/services/HttpService';
+import CampaignForm from '@/components/campaigns/CampaignForm';
 import scope from '@/services/scope';
 
 export default {
@@ -24,16 +25,23 @@ export default {
   methods: {
     createNewCampaign(data) {
       console.log("Sending POST for", data)
-      //  TODO Implement actual response
-      setTimeout(() => {
-        this.$router.push(`/app/${data.slug}`)
+
+      store.create('campaign', {
+        campaign: data
+      }, {
+        basePath: getHttpAdapter().resourceBasePath('users', scope.current_user.id),
+        force: true
+      }).then((campaign) => {
+        this.$router.push(`/app/${campaign.slug}`)
 
         this.$notify({
           title: 'Critical Success!',
           message: 'Campaigns successfully created!',
           type: 'success'
         });
-      }, 1000)
+      }).catch((error) => {
+        console.warn(err)
+      })
     }
   }
 }

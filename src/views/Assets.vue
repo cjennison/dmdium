@@ -14,58 +14,77 @@
         v-layout
           v-flex(xs4)
             .search.ma-2
-              v-layout
+              v-layout(fill-height)
                 v-flex(offset-xs2 xs8)
                   v-text-field(prepend-icon="search", name="search", label="Search Asset", id="search-input")
             v-divider
-            .bank-title Monsters
+            v-layout
+              v-flex(xs8)
+                .subheading(style="line-height: 3;") Monsters
+              v-flex(xs4)
+                v-btn(flat, @click="toggleCreateModal('Monster')") + Add
             v-list
               v-list-tile(v-for='monster in monsters' @click="selectAsset(monster, 'Monster')")
                 v-list-tile-title {{ monster.name }}
             v-divider
-            .bank-title NPCs
+            v-layout
+              v-flex(xs8)
+                .subheading(style="line-height: 3;") NPCs
+              v-flex(xs4)
+                v-btn(flat, @click="toggleCreateModal('Character')") + Add
             v-list
               v-list-tile(v-for='character in characters' @click="selectAsset(character, 'Character')")
                 v-list-tile-title {{ character.name }}
             v-divider
-            .bank-title Items
+            v-layout
+              v-flex(xs8)
+                .subheading(style="line-height: 3;") Items
+              v-flex(xs4)
+                v-btn(flat, @click="toggleCreateModal('Item')") + Add
             v-list
               v-list-tile(v-for='item in items' @click="selectAsset(item, 'Item')")
                 v-list-tile-title {{ item.name }}
-
           v-flex(xs8)
-            v-layout(align-center, justify-center, fill-height)
-              v-flex(xs10 offset-xs1)
-                v-card.pa-2(v-if='selectedAsset')
-                  v-card-title {{ selectedAsset.name }}
-                  v-subheader.description {{ selectedAsset.description }}
-                  v-card-actions
-                    v-btn(@click="showConfirmDeleteDialog()") Delete
-              v-dialog(v-model='confirmDeleteDialog', max-width='350')
-                v-card
-                  v-card-title.headline(v-if='selectedAsset') Are you sure you want to delete this {{ selectedAssetType }}: {{ selectedAsset.name }}?
-                  v-card-text
-                    | This is permamenent. But your current campaigns using this asset will be unaffected.
-                  v-card-actions
-                    v-spacer
-                    v-btn(color='orange darken-1', flat='flat', @click.native='hideConfirmDeleteDialog()') Cancel
-                    v-btn(color='green darken-1', flat='flat', @click.native='deleteAsset()') Yes
-
+            asset-view(v-if='selectedAsset', :asset="selectedAsset", :type="selectedAssetType", @delete-asset="updateAssetList")
+      v-dialog(v-model='createModal', max-width='500')
+        v-card
+          v-card-title.headline
+            | Create a new {{ createModalType }}
+          v-card-text
+            | This {{ createModalType }} will be stored in your asset bank to add to campaigns later!
+            character-form(v-if='createModalType == "Character"', :characterForm="assetForm", @submit-form="createAsset")
+            item-form(v-if='createModalType == "Item"', :itemForm="assetForm", @submit-form="createAsset")
+            monster-form(v-if='createModalType == "Monster"', :monsterForm="assetForm", @submit-form="createAsset")
 </template>
 
 <script>
 import { store, getHttpAdapter } from '@/services/HttpService';
+import AssetView from '@/views/assets/AssetView.vue';
+import CharacterForm from '@/components/characters/CharacterForm';
+import MonsterForm from '@/components/monsters/MonsterForm';
+import ItemForm from '@/components/items/ItemForm';
+
 import scope from '@/services/scope';
 
 export default {
   name: 'asset_bank',
+  components: { 
+    AssetView ,
+    CharacterForm,
+    ItemForm,
+    MonsterForm
+  },
   created() {
-    this.getAssets();
+    this.getMonsters();
+    this.getItems();
+    this.getCharacters();
   },
   data() {
     return {
       user: scope.current_user,
-      confirmDeleteDialog: false,
+      createModal: false,
+      createModalType: null,
+      assetForm: {},
       loadingStates: {
         monster: true,
         items: true,
@@ -79,35 +98,44 @@ export default {
     }
   },
   methods: {
+    toggleCreateModal(type) {
+      this.createModal = !this.createModal;
+      this.createModalType = type;
+      this.assetForm = {};
+    },
+
     selectAsset(asset, type) {
       this.selectedAsset = asset;
       this.selectedAssetType = type;
     },
 
-    showConfirmDeleteDialog() {
-      this.confirmDeleteDialog = true
+    updateAssetList(type) {
+      this.selectedAsset = null;
+      this.selectedAssetType = null;
+      this[`get${type}s`]();
     },
 
-    hideConfirmDeleteDialog() {
-      this.confirmDeleteDialog = false
-    },
+    createAsset(form) {
+      const params = {}
+      params[this.createModalType.toLowerCase()] = form
+      store.create(this.createModalType.toLowerCase(), params, {
+        force: true,
+        basePath: getHttpAdapter().resourceBasePath('users', scope.current_user.id)
+      }).then((asset) => {
+        this.$notify({
+          title: 'Critical Success!',
+          message: this.createModalType + ' successfully created!',
+          type: 'success'
+        });
 
-    deleteAsset() {
-      store.destroy(this.selectedAssetType.toLowerCase(), this.selectedAsset.id, {
-        basePath: getHttpAdapter().resourceBasePath('users', scope.current_user.id),
-        force: true
-      }).then((result) => {
-        this.hideConfirmDeleteDialog()
-        this.selectedAsset = null;
-        this.selectedAssetType = null;
-
-        this.getAssets();
+        this.updateAssetList(this.createModalType)
+        this.toggleCreateModal()
       }).catch((error) => {
-        console.warn(error)
+        console.warn(err)
       })
     },
 
-    getAssets() {
+    getMonsters() {
       store.findAll('monster', {}, {
         basePath: getHttpAdapter().resourceBasePath('users', scope.current_user.id),
         force: true
@@ -117,7 +145,9 @@ export default {
       }).catch((error) => {
         console.warn(error)
       })
+    },
 
+    getItems() {
       store.findAll('item', {}, {
         basePath: getHttpAdapter().resourceBasePath('users', scope.current_user.id),
         force: true
@@ -127,7 +157,9 @@ export default {
       }).catch((error) => {
         console.warn(error)
       })
+    },
 
+    getCharacters() {
       store.findAll('character', {}, {
         basePath: getHttpAdapter().resourceBasePath('users', scope.current_user.id),
         force: true

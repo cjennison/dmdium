@@ -6,6 +6,7 @@ import Home from './views/Home.vue'
 import Dashboard from './views/Dashboard.vue'
 import Login from './views/Login.vue'
 import Register from './views/Register.vue'
+import Assets from './views/Assets.vue'
 import Segments from './views/Segments.vue'
 import Monsters from './views/Monsters.vue'
 import Characters from './views/Characters.vue'
@@ -86,6 +87,17 @@ export default new Router({
           name: 'new',
           path: 'new',
           component: NewCampaign
+        }
+      ]
+    },
+    {
+      path: '/assets',
+      component: RouterView,
+      children: [
+        {
+          name: 'assets',
+          path: '',
+          component: Assets
         }
       ]
     },

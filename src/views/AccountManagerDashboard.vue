@@ -5,6 +5,7 @@
         v-icon arrow_left
       v-btn(to="/account") My Account
       v-btn(to="/campaigns") My Campaigns
+      v-btn(to="/assets") My Assets
       v-spacer
       v-btn Logout
     v-content
@@ -14,8 +15,6 @@
 </template>
 
 <script>
-import APIService from '@/services/fake-api-service';
-
 export default {
   name: 'account_manager_dashboard',
   methods: {

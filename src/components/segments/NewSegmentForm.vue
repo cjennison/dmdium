@@ -7,16 +7,9 @@
         label="Segment Name"
         :counter="64"
         required)
-      v-text-field(v-model="segmentForm.synopsis"
-        label="Synopsis"
+      v-text-field(v-model="segmentForm.description"
+        label="Description"
         required)
-      v-select(v-model="segmentForm.type"
-          :items="type_options"
-          label="Select"
-          item-value="key"
-          item-text="name"
-          single-line
-          bottom)
       v-btn(@click="submit", :disabled="!fieldsFilled()") Submit
       v-btn(@click="reset" flat) Reset
 </template>
@@ -31,25 +24,7 @@ export default {
   },
   data() {
     return {
-      valid: false,
-      type_options: [
-        {
-          name: 'Exploration',
-          key: 'exploration'
-        },
-        {
-          name: 'Combat',
-          key: 'combat'
-        },
-        {
-          name: 'Dialogue',
-          key: 'dialogue'
-        },
-        {
-          name: 'Travel',
-          key: 'travel'
-        }
-      ]
+      valid: false
     }
   },
   methods: {
@@ -60,14 +35,12 @@ export default {
 
     fieldsFilled() {
       return this.segmentForm.name &&
-        this.segmentForm.synopsis &&
-        this.segmentForm.type
+        this.segmentForm.description;
     },
 
     reset() {
       this.segmentForm.name = null;
-      this.segmentForm.synopsis = null;
-      this.segmentForm.type = null;
+      this.segmentForm.description = null;
     }
   }
 }

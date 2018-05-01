@@ -9,7 +9,6 @@ const store = new DataStore();
 const httpAdapter = new HttpAdapter({
   basePath: basePath,
   beforeHTTP: function (config, opts) {
-    // Now do the default behavior
     return HttpAdapter.prototype.beforeHTTP.call(this, config, opts);
   },
   afterHTTP: function(config, opts, response) {
@@ -47,6 +46,26 @@ store.defineMapper('auth', {
 store.defineMapper('campaign', {
   name: 'campaign',
   endpoint: 'campaigns'
+})
+
+store.defineMapper('segment', {
+  name: 'segment',
+  endpoint: 'segments'
+})
+
+store.defineMapper('item', {
+  name: 'item',
+  endpoint: 'items'
+})
+
+store.defineMapper('monster', {
+  name: 'monster',
+  endpoint: 'monsters'
+})
+
+store.defineMapper('character', {
+  name: 'character',
+  endpoint: 'characters'
 })
 
 httpAdapter.resourceBasePath = (resourceType, resourceId) => {

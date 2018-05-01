@@ -1,12 +1,13 @@
 <template lang="pug">
   #segments
     v-subheader Segments
-    v-layout(row wrap).pa-2()
+    v-btn(:to="getCampaignBaseRoute() + '/segments/new'") + Create New
+    v-layout(row wrap).pa-2
       v-flex.pa-2(xs6 v-for='segment in segments')
         v-card.segment-card.pa-1
           v-card-title.headline {{ segment.name }}
           hr
-          .description.mt-3 {{ segment.synopsis }}
+          .description.mt-3 {{ segment.description }}
           v-card-actions
             v-layout
               v-flex(xs12)
@@ -15,7 +16,7 @@
 
 <script>
 
-import APIService from '@/services/fake-api-service';
+import { store, getHttpAdapter } from '@/services/HttpService';
 import scope from '@/services/scope';
 
 export default {
@@ -31,8 +32,13 @@ export default {
   },
   methods: {
     getSegments() {
-      APIService.getSegmentsForCampaign(this.campaign.id).then((segments) => {
+      store.findAll('segment', {}, {
+        basePath: getHttpAdapter().resourceBasePath('campaigns', this.campaign.id),
+        force: true
+      }).then((segments) => {
         this.segments = segments;
+      }).catch((error) => {
+        console.warn(error)
       })
     },
     getCampaignBaseRoute() {

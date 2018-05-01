@@ -9,6 +9,7 @@
 
 <script>
 
+import { store } from '@/services/HttpService';
 import _ from 'lodash';
 import MonsterForm from '@/components/monsters/MonsterForm'
 import APIService from '@/services/fake-api-service';
@@ -28,7 +29,7 @@ export default {
   },
   methods: {
     getMonster(id) {
-      APIService.getMonster(id).then((monster) => {
+      store.find('monster', id).then((monster) => {
         this.loading = false;
         this.monsterForm = _.cloneDeep(monster);
       })
@@ -36,16 +37,22 @@ export default {
 
     createNewMonster(data) {
       console.log("Sending PUT for", data)
-      //  TODO Implement actual response
-      setTimeout(() => {
+      store.update('monster', this.$route.params.monster_id, {
+        monster: data
+      }, {
+        force: true
+      }).then((campaign) => {
         this.$router.push(`/app/${scope.current_campaign.slug}/monsters`)
 
         this.$notify({
           title: 'Critical Success!',
-          message: 'Monster successfully edited!',
+          message: 'Monster successfully created!',
           type: 'success'
         });
-      }, 1000)
+      }).catch((error) => {
+        console.warn(err)
+      })
+      
     }
   }
 }

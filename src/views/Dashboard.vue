@@ -58,7 +58,7 @@
 <script>
 
 import _ from 'lodash';
-import APIService from '@/services/fake-api-service';
+import { store, getHttpAdapter } from '@/services/HttpService';
 import scope from '@/services/scope';
 
 export default {
@@ -86,11 +86,18 @@ export default {
       return `/app/${this.currentCampaign.slug}`;
     },
     getCampaigns() {
-      APIService.getCampaigns().then((campaigns) => {
-        this.campaigns = campaigns
+      store.findAll('campaign', {}, {
+        basePath: getHttpAdapter().resourceBasePath('users', scope.current_user.id),
+        force: true
+      }).then((campaigns) => {
+        this.campaigns = campaigns;
+
+        //  Find and set the slug campaign
         const paramCampaign = _.find(campaigns, campaign => campaign.slug == this.$route.params.campaign_slug)
         this.currentCampaign = paramCampaign;
         scope.current_campaign = paramCampaign;
+      }).catch((error) => {
+        console.warn(error)
       })
     },
 

@@ -8,6 +8,7 @@
 
 <script>
 
+import { store, getHttpAdapter } from '@/services/HttpService';
 import NewSegmentForm from '@/components/segments/NewSegmentForm'
 import scope from '@/services/scope';
 
@@ -18,18 +19,19 @@ export default {
     return {
       segmentForm: {
         name: null,
-        parent_id: null,
-        synopsis: null,
-        type: null,
-        outcome: null
+        description: null
       }
     }
   },
   methods: {
     createNewSegment(data) {
       console.log("Sending POST for", data)
-      //  TODO Implement actual response
-      setTimeout(() => {
+      store.create('segment', {
+        segment: data
+      }, {
+        basePath: getHttpAdapter().resourceBasePath('campaigns', scope.current_campaign.id),
+        force: true
+      }).then((campaign) => {
         this.$router.push(`/app/${scope.current_campaign.slug}/segments`)
 
         this.$notify({
@@ -37,7 +39,9 @@ export default {
           message: 'Segment successfully created!',
           type: 'success'
         });
-      }, 1000)
+      }).catch((error) => {
+        console.warn(err)
+      })
     }
   }
 }

@@ -29,7 +29,7 @@
 
 <script>
 
-import APIService from '@/services/fake-api-service';
+import { store, getHttpAdapter } from '@/services/HttpService';
 import scope from '@/services/scope';
 
 export default {
@@ -45,8 +45,13 @@ export default {
   },
   methods: {
     getSegments() {
-      APIService.getMonstersForCampaign(this.campaign.id).then((monsters) => {
+      store.findAll('monster', {}, {
+        basePath: getHttpAdapter().resourceBasePath('campaigns', scope.current_campaign.id),
+        force: true
+      }).then((monsters) => {
         this.monsters = monsters;
+      }).catch((error) => {
+        console.warn(error)
       })
     },
     

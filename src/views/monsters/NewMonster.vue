@@ -8,6 +8,7 @@
 
 <script>
 
+import { store, getHttpAdapter } from '@/services/HttpService';
 import MonsterForm from '@/components/monsters/MonsterForm'
 import scope from '@/services/scope';
 
@@ -17,15 +18,23 @@ export default {
   data() {
     return {
       monsterForm: {
-        name: null
+        name: null,
+        description: null,
+        hit: null,
+        damage: null,
+        armor_class: null
       }
     }
   },
   methods: {
     createNewMonster(data) {
       console.log("Sending POST for", data)
-      //  TODO Implement actual response
-      setTimeout(() => {
+      store.create('monster', {
+        monster: data
+      }, {
+        basePath: getHttpAdapter().resourceBasePath('campaigns', scope.current_campaign.id),
+        force: true
+      }).then((campaign) => {
         this.$router.push(`/app/${scope.current_campaign.slug}/monsters`)
 
         this.$notify({
@@ -33,7 +42,9 @@ export default {
           message: 'Monster successfully created!',
           type: 'success'
         });
-      }, 1000)
+      }).catch((error) => {
+        console.warn(err)
+      })
     }
   }
 }

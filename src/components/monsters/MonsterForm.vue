@@ -21,6 +21,9 @@
       v-text-field(v-model="monsterForm.damage"
         label="Damage Dice"
         :counter="10")
+      v-text-field(v-model="monsterForm.armor_class"
+        label="Armor Class"
+        :counter="3")
       v-text-field(
         label="Avatar"
         type="file")

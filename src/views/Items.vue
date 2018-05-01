@@ -14,7 +14,16 @@
           .description.mt-3 {{ item.description }}
           v-card-actions
             v-btn(flat, :to="getCampaignBaseRoute() + '/items/' + item.id + '/edit'") Edit
-            v-btn(flat, class="danger") Delete
+            v-btn(flat, class="danger", @click="showConfirmDeleteDialog(item)") Delete
+      v-dialog(v-model='confirmDeleteDialog', max-width='290')
+        v-card
+          v-card-title.headline(v-if='confirmDeleteDialogTarget') Are you sure you want to delete this Item: {{ confirmDeleteDialogTarget.name }}?
+          v-card-text
+            | You can always add it back later.
+          v-card-actions
+            v-spacer
+            v-btn(color='orange darken-1', flat='flat', @click.native='hideConfirmDeleteDialog()') Cancel
+            v-btn(color='green darken-1', flat='flat', @click.native='deleteItem()') Yes
 </template>
 
 <script>
@@ -29,11 +38,35 @@ export default {
   },
   data() {
     return {
+      confirmDeleteDialog: false,
+      confirmDeleteDialogTarget: null,
       items: [],
       campaign: scope.current_campaign
     }
   },
   methods: {
+    showConfirmDeleteDialog(monster) {
+      this.confirmDeleteDialog = true
+      this.confirmDeleteDialogTarget = monster
+    },
+
+    hideConfirmDeleteDialog(monster) {
+      this.confirmDeleteDialog = false
+      this.confirmDeleteDialogTarget = null
+    },
+
+    deleteItem() {
+      store.destroy('item', this.confirmDeleteDialogTarget.id, {
+        basePath: getHttpAdapter().resourceBasePath('campaigns', scope.current_campaign.id),
+        force: true
+      }).then((result) => {
+        this.hideConfirmDeleteDialog()
+        this.getItems();
+      }).catch((error) => {
+        console.warn(error)
+      })
+    },
+
     getItems() {
       store.findAll('item', {}, {
         basePath: getHttpAdapter().resourceBasePath('campaigns', scope.current_campaign.id),

@@ -24,7 +24,16 @@
               v-flex.text-xs-left.pa-2(xs1) {{ monster.damage }}
           v-card-actions
             v-btn(flat, :to="getCampaignBaseRoute() + '/monsters/' + monster.id + '/edit'") Edit
-            v-btn(flat, class="danger") Delete
+            v-btn(flat, class="red", @click="showConfirmDeleteDialog(monster)") Delete
+      v-dialog(v-model='confirmDeleteDialog', max-width='290')
+        v-card
+          v-card-title.headline(v-if='confirmDeleteDialogTarget') Are you sure you want to delete this Monster: {{ confirmDeleteDialogTarget.name }}?
+          v-card-text
+            | You can always add it back later.
+          v-card-actions
+            v-spacer
+            v-btn(color='orange darken-1', flat='flat', @click.native='hideConfirmDeleteDialog()') Cancel
+            v-btn(color='green darken-1', flat='flat', @click.native='deleteMonster()') Yes
 </template>
 
 <script>
@@ -39,11 +48,35 @@ export default {
   },
   data() {
     return {
+      confirmDeleteDialog: false,
+      confirmDeleteDialogTarget: null,
       monsters: [],
       campaign: scope.current_campaign
     }
   },
   methods: {
+    showConfirmDeleteDialog(monster) {
+      this.confirmDeleteDialog = true
+      this.confirmDeleteDialogTarget = monster
+    },
+
+    hideConfirmDeleteDialog(monster) {
+      this.confirmDeleteDialog = false
+      this.confirmDeleteDialogTarget = null
+    },
+
+    deleteMonster() {
+      store.destroy('monster', this.confirmDeleteDialogTarget.id, {
+        basePath: getHttpAdapter().resourceBasePath('campaigns', scope.current_campaign.id),
+        force: true
+      }).then((result) => {
+        this.hideConfirmDeleteDialog()
+        this.getMonsters();
+      }).catch((error) => {
+        console.warn(error)
+      })
+    },
+
     getMonsters() {
       store.findAll('monster', {}, {
         basePath: getHttpAdapter().resourceBasePath('campaigns', scope.current_campaign.id),

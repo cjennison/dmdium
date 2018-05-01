@@ -18,7 +18,7 @@
               v-flex.text-xs-left.pa-2(xs1) {{ character.hitpoints }}
           v-card-actions
             v-btn(flat, :to="getCampaignBaseRoute() + '/npcs/' + character.id + '/edit'") Edit
-            v-btn(flat, class="danger", @click="showConfirmDeleteDialog(character)") Delete
+            v-btn(flat, class="red", @click="showConfirmDeleteDialog(character)") Delete
       v-dialog(v-model='confirmDeleteDialog', max-width='290')
         v-card
           v-card-title.headline Are you sure you want to delete this NPC?

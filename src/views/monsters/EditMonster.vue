@@ -4,7 +4,7 @@
       v-flex(sm6 offset-sm3 xs12)
         v-card.pa-3
           v-progress-circular(v-if="loading", indeterminate, :size="200") Loading Monster . . .
-          monster-form(v-else, :monsterForm="monsterForm", formType="edit" @submit-form="createNewMonster")
+          monster-form(v-else, :monsterForm="monsterForm", formType="edit" @submit-form="editMonster")
 </template>
 
 <script>
@@ -12,7 +12,6 @@
 import { store } from '@/services/HttpService';
 import _ from 'lodash';
 import MonsterForm from '@/components/monsters/MonsterForm'
-import APIService from '@/services/fake-api-service';
 import scope from '@/services/scope';
 
 export default {
@@ -35,13 +34,13 @@ export default {
       })
     },
 
-    createNewMonster(data) {
+    editMonster(data) {
       console.log("Sending PUT for", data)
       store.update('monster', this.$route.params.monster_id, {
         monster: data
       }, {
         force: true
-      }).then((campaign) => {
+      }).then((monster) => {
         this.$router.push(`/app/${scope.current_campaign.slug}/monsters`)
 
         this.$notify({
@@ -52,7 +51,6 @@ export default {
       }).catch((error) => {
         console.warn(err)
       })
-      
     }
   }
 }

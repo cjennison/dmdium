@@ -35,7 +35,7 @@ import scope from '@/services/scope';
 export default {
   name: 'monsters',
   created() {
-    this.getSegments();
+    this.getMonsters();
   },
   data() {
     return {
@@ -44,7 +44,7 @@ export default {
     }
   },
   methods: {
-    getSegments() {
+    getMonsters() {
       store.findAll('monster', {}, {
         basePath: getHttpAdapter().resourceBasePath('campaigns', scope.current_campaign.id),
         force: true

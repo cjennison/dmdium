@@ -19,7 +19,7 @@
 
 <script>
 
-import APIService from '@/services/fake-api-service';
+import { store, getHttpAdapter } from '@/services/HttpService';
 import scope from '@/services/scope';
 
 export default {
@@ -35,8 +35,13 @@ export default {
   },
   methods: {
     getItems() {
-      APIService.getItemsForCampaign(this.campaign.id).then((items) => {
+      store.findAll('item', {}, {
+        basePath: getHttpAdapter().resourceBasePath('campaigns', scope.current_campaign.id),
+        force: true
+      }).then((items) => {
         this.items = items;
+      }).catch((error) => {
+        console.warn(error)
       })
     },
     

@@ -8,6 +8,7 @@ import Login from './views/Login.vue'
 import Register from './views/Register.vue'
 import Segments from './views/Segments.vue'
 import Monsters from './views/Monsters.vue'
+import Characters from './views/Characters.vue'
 import Items from './views/Items.vue'
 import Account from './views/Account.vue'
 import Campaigns from './views/Campaigns.vue'
@@ -24,6 +25,10 @@ import EditMonster from './views/monsters/EditMonster.vue'
 //  Monsters
 import NewItem from './views/items/NewItem.vue'
 import EditItem from './views/items/EditItem.vue'
+
+//  Characters
+import NewCharacter from './views/characters/NewCharacter.vue'
+import EditCharacter from './views/characters/EditCharacter.vue'
 
 // Campaigns
 import NewCampaign from './views/campaigns/NewCampaign.vue'
@@ -105,6 +110,25 @@ export default new Router({
             {
               path: 'new',
               component: NewSegment
+            }
+          ]
+        },
+        {
+          path: 'npcs',
+          component: RouterView,
+          children: [
+            {
+              name: 'npcs',
+              path: '',
+              component: Characters
+            },
+            {
+              path: 'new',
+              component: NewCharacter
+            },
+            {
+              path: ':character_id/edit',
+              component: EditCharacter
             }
           ]
         },

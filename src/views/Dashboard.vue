@@ -21,6 +21,11 @@
             v-icon surround_sound
           v-list-tile-content
             v-list-tile-title Monsters
+        v-list-tile(@click :to="getCampaignBaseRoute() + '/npcs'")
+          v-list-tile-action
+            v-icon account_box
+          v-list-tile-content
+            v-list-tile-title NPCs
         v-list-tile(@click :to="getCampaignBaseRoute() + '/items'")
           v-list-tile-action
             v-icon playlist_play
@@ -103,6 +108,7 @@ export default {
 
     selectCampaign(campaign) {
       this.currentCampaign = campaign;
+      scope.current_campaign = campaign;
       this.$router.push(this.getCampaignBaseRoute())
     }
   }

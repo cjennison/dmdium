@@ -4,14 +4,14 @@
       v-flex(sm6 offset-sm3 xs12)
         v-card.pa-3
           v-progress-circular(v-if="loading", indeterminate, :size="200") Loading Item . . .
-          item-form(v-else, :itemForm="itemForm", formType="edit" @submit-form="createNewItem")
+          item-form(v-else, :itemForm="itemForm", formType="edit" @submit-form="editItem")
 </template>
 
 <script>
 
 import _ from 'lodash';
+import { store } from '@/services/HttpService';
 import ItemForm from '@/components/items/ItemForm'
-import APIService from '@/services/fake-api-service';
 import scope from '@/services/scope';
 
 export default {
@@ -28,25 +28,29 @@ export default {
   },
   methods: {
     getItem(id) {
-      APIService.getItem(id).then((item) => {
-        console.log(item)
+      store.find('item', id).then((item) => {
         this.loading = false;
         this.itemForm = _.cloneDeep(item);
       })
     },
 
-    createNewItem(data) {
+    editItem(data) {
       console.log("Sending PUT for", data)
-      //  TODO Implement actual response
-      setTimeout(() => {
+      store.update('item', this.$route.params.item_id, {
+        item: data
+      }, {
+        force: true
+      }).then((item) => {
         this.$router.push(`/app/${scope.current_campaign.slug}/items`)
 
         this.$notify({
           title: 'Critical Success!',
-          message: 'item successfully edited!',
+          message: 'Item successfully updated!',
           type: 'success'
         });
-      }, 1000)
+      }).catch((error) => {
+        console.warn(err)
+      })
     }
   }
 }

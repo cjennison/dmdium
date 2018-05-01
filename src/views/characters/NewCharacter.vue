@@ -1,42 +1,45 @@
 <template lang="pug">
-  #new-item
+  #new-character
     v-layout
       v-flex(sm6 offset-sm3 xs12)
         v-card.pa-3
-          item-form(:itemForm="itemForm", @submit-form="createNewItem")
+          character-form(:characterForm="characterForm", @submit-form="createNewcharacter")
 </template>
 
 <script>
 
 import { store, getHttpAdapter } from '@/services/HttpService';
-import ItemForm from '@/components/items/ItemForm'
+import CharacterForm from '@/components/characters/CharacterForm'
 import scope from '@/services/scope';
 
 export default {
-  name: 'new_item',
-  components: { ItemForm },
+  name: 'new_character',
+  components: { CharacterForm },
   data() {
     return {
-      itemForm: {
+      characterForm: {
         name: null,
-        description: null
+        description: null,
+        hit: null,
+        damage: null,
+        armor_class: null
       }
     }
   },
   methods: {
-    createNewItem(data) {
+    createNewcharacter(data) {
       console.log("Sending POST for", data)
-      store.create('item', {
-        item: data
+      store.create('character', {
+        character: data
       }, {
         basePath: getHttpAdapter().resourceBasePath('campaigns', scope.current_campaign.id),
         force: true
       }).then((campaign) => {
-        this.$router.push(`/app/${scope.current_campaign.slug}/items`)
+        this.$router.push(`/app/${scope.current_campaign.slug}/npcs`)
 
         this.$notify({
           title: 'Critical Success!',
-          message: 'Item successfully created!',
+          message: 'character successfully created!',
           type: 'success'
         });
       }).catch((error) => {

@@ -11,7 +11,9 @@
           v-card-actions
             v-layout
               v-flex(xs12)
-            v-btn(flat, :to="getCampaignBaseRoute() + '/segments/new?parent_id=' + segment.id") Create next segment
+                v-spacer
+                v-btn(flat, :to="getCampaignBaseRoute() + '/segments/' + segment.id + '/edit'") Edit
+                v-btn(flat, :to="getCampaignBaseRoute() + '/segments/new?parent_id=' + segment.id") Create next segment
 </template>
 
 <script>

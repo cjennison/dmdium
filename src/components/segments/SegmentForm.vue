@@ -1,7 +1,6 @@
 <template lang="pug">
-  .new-segment-form 
+  .segment-form 
     form
-      .display-1 New Segment
       .subheading Enter information for your segment
       v-text-field(v-model="segmentForm.name"
         label="Segment Name"
@@ -10,21 +9,34 @@
       v-text-field(v-model="segmentForm.description"
         label="Description"
         required)
+      vue-editor.html-editor(v-model="segmentForm.plot")
       v-btn(@click="submit", :disabled="!fieldsFilled()") Submit
       v-btn(@click="reset" flat) Reset
 </template>
 
 <script>
+import { VueEditor } from 'vue2-editor'
+
 export default {
-  name: 'new_segment_form',
+  name: 'segment_form',
   props: {
     segmentForm: {
       type: Object
+    },
+    formType: {
+      type: String
+    }
+  },
+  components: { VueEditor },
+  created() {
+    if (this.formType == 'edit') {
+      this.segment = _.cloneDeep(this.segmentForm)
     }
   },
   data() {
     return {
-      valid: false
+      valid: false,
+      segment: null
     }
   },
   methods: {
@@ -39,10 +51,25 @@ export default {
     },
 
     reset() {
-      this.segmentForm.name = null;
-      this.segmentForm.description = null;
+      if (this.formType === 'edit') {
+         _.forEach(this.segmentForm, (value, key) => {
+          this.segmentForm[key] = this.segment[key];
+        })
+      } else {
+        _.forEach(this.segmentForm, (value, key) => {
+          this.segmentForm[key] = null;
+        })
+      }
     }
   }
 }
 </script>
 
+<style lang='scss'>
+  .segment-form {
+    .html-editor {
+      background: white;
+      color: black;
+    }
+  }
+</style>

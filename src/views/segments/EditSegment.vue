@@ -3,32 +3,42 @@
     v-layout
       v-flex(sm8 offset-sm2 xs12)
         v-card.pa-3
-          h2 New Segment
-          segment-form(:segmentForm="segmentForm", @submit-form="createNewSegment")
+          h2 Edit Segment
+          v-progress-circular(v-if="loading", indeterminate, :size="200") Loading Segment . . .
+          segment-form(v-else, :segmentForm="segmentForm", formType="edit", @submit-form="editSegment")
 </template>
 
 <script>
 
 import { store, getHttpAdapter } from '@/services/HttpService';
+import _ from 'lodash';
+
 import SegmentForm from '@/components/segments/SegmentForm'
 import scope from '@/services/scope';
 
 export default {
   name: 'new_segment',
   components: { SegmentForm },
+  created() {
+    this.getSegment(this.$route.params.segment_id);
+  },
   data() {
     return {
-      segmentForm: {
-        name: null,
-        description: null,
-        plot: null
-      }
+      loading: true,
+      segmentForm: {}
     }
   },
   methods: {
-    createNewSegment(data) {
+    getSegment(id) {
+      store.find('segment', id).then((segment) => {
+        this.loading = false;
+        this.segmentForm = _.cloneDeep(segment);
+      })
+    },
+
+    editSegment(data) {
       console.log("Sending POST for", data)
-      store.create('segment', {
+      store.update('segment', this.$route.params.segment_id, {
         segment: data
       }, {
         basePath: getHttpAdapter().resourceBasePath('campaigns', scope.current_campaign.id),
@@ -38,7 +48,7 @@ export default {
 
         this.$notify({
           title: 'Critical Success!',
-          message: 'Segment successfully created!',
+          message: 'Segment successfully edited!',
           type: 'success'
         });
       }).catch((error) => {

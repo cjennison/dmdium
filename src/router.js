@@ -18,6 +18,7 @@ import CampaignSummary from './views/CampaignSummary.vue'
 
 //  Segments
 import NewSegment from './views/segments/NewSegment.vue'
+import EditSegment from './views/segments/EditSegment.vue'
 
 //  Monsters
 import NewMonster from './views/monsters/NewMonster.vue'
@@ -122,6 +123,10 @@ export default new Router({
             {
               path: 'new',
               component: NewSegment
+            },
+            {
+              path: ':segment_id/edit',
+              component: EditSegment
             }
           ]
         },

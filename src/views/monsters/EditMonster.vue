@@ -45,7 +45,7 @@ export default {
 
         this.$notify({
           title: 'Critical Success!',
-          message: 'Monster successfully created!',
+          message: 'Monster successfully edited!',
           type: 'success'
         });
       }).catch((error) => {

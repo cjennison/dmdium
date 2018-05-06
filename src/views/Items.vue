@@ -2,8 +2,9 @@
   #segments
     v-subheader Items for #[b &nbsp{{ campaign.name }}]
     v-layout
-      v-flex(xs2 offset-xs10)
+      v-flex(xs3 offset-xs9)
         v-spacer
+        v-btn(@click.native="toggleQuickAddDialog()") + Add Saved
         v-btn(:to="getCampaignBaseRoute() + '/items/new'") + Create New
     v-layout(row wrap).pa-2()
       v-flex.pa-2(xs3 v-for='item in items')
@@ -24,6 +25,9 @@
             v-spacer
             v-btn(color='orange darken-1', flat='flat', @click.native='hideConfirmDeleteDialog()') Cancel
             v-btn(color='green darken-1', flat='flat', @click.native='deleteItem()') Yes
+      v-dialog(v-model='quickAddToggled', max-width='350')
+        quick-add-form(assetType="Item", @cancel='toggleQuickAddDialog', @select='addQuickAddItem')
+        
 </template>
 
 <script>
@@ -31,13 +35,18 @@
 import { store, getHttpAdapter } from '@/services/HttpService';
 import scope from '@/services/scope';
 
+import QuickAddForm from '@/components/quick-add/QuickAddForm'
+
 export default {
   name: 'items',
+  components: { QuickAddForm },
   created() {
     this.getItems();
   },
   data() {
     return {
+      loading: false,
+      quickAddToggled: false,
       confirmDeleteDialog: false,
       confirmDeleteDialogTarget: null,
       items: [],
@@ -45,6 +54,10 @@ export default {
     }
   },
   methods: {
+    toggleQuickAddDialog() {
+      this.quickAddToggled = !this.quickAddToggled
+    },
+
     showConfirmDeleteDialog(monster) {
       this.confirmDeleteDialog = true
       this.confirmDeleteDialogTarget = monster
@@ -53,6 +66,22 @@ export default {
     hideConfirmDeleteDialog(monster) {
       this.confirmDeleteDialog = false
       this.confirmDeleteDialogTarget = null
+    },
+
+    addQuickAddItem(itemId) {
+      this.toggleQuickAddDialog();
+
+      this.loading = true;
+      store.create('asset', null, {
+        basePath: getHttpAdapter().resourceBasePath('campaigns', scope.current_campaign.id),
+        endpoint: 'items/' + itemId
+      }).then((result) => {
+        this.getItems()
+      }).catch((err) => {
+        console.warn(err)
+      }).then(() => {
+        this.loading = false;
+      })
     },
 
     deleteItem() {

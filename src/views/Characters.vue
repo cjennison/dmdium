@@ -2,8 +2,9 @@
   #segments
     v-subheader NPCs for #[b &nbsp{{ campaign.name }}]
     v-layout
-      v-flex(xs2 offset-xs10)
+      v-flex(xs3 offset-xs9)
         v-spacer
+        v-btn(@click.native="toggleQuickAddDialog()") + Add Saved
         v-btn(:to="getCampaignBaseRoute() + '/npcs/new'") + Create New
     v-layout(row wrap).pa-2()
       v-flex.pa-2(xs6 v-for='character in characters')
@@ -28,7 +29,9 @@
             v-spacer
             v-btn(color='orange darken-1', flat='flat', @click.native='hideConfirmDeleteDialog()') Cancel
             v-btn(color='green darken-1', flat='flat', @click.native='deleteCharacter()') Yes
-
+      v-dialog(v-model='quickAddToggled', max-width='350')
+        quick-add-form(assetType="Character", @cancel='toggleQuickAddDialog', @select='addQuickAddCharacter')
+      
 </template>
 
 <script>
@@ -36,13 +39,18 @@
 import { store, getHttpAdapter } from '@/services/HttpService';
 import scope from '@/services/scope';
 
+import QuickAddForm from '@/components/quick-add/QuickAddForm'
+
 export default {
   name: 'characters',
+  components: { QuickAddForm },
   created() {
     this.getCharacters();
   },
   data() {
     return {
+      loading: false,
+      quickAddToggled: false,
       confirmDeleteDialog: false,
       confirmDeleteDialogTarget: null,
       characters: [],
@@ -50,6 +58,10 @@ export default {
     }
   },
   methods: {
+    toggleQuickAddDialog() {
+      this.quickAddToggled = !this.quickAddToggled
+    },
+
     showConfirmDeleteDialog(character) {
       this.confirmDeleteDialog = true
       this.confirmDeleteDialogTarget = character
@@ -58,6 +70,22 @@ export default {
     hideConfirmDeleteDialog(character) {
       this.confirmDeleteDialog = false
       this.confirmDeleteDialogTarget = null
+    },
+
+    addQuickAddCharacter(characterId) {
+      this.toggleQuickAddDialog();
+
+      this.loading = true;
+      store.create('asset', null, {
+        basePath: getHttpAdapter().resourceBasePath('campaigns', scope.current_campaign.id),
+        endpoint: 'characters/' + characterId
+      }).then((result) => {
+        this.getCharacters()
+      }).catch((err) => {
+        console.warn(err)
+      }).then(() => {
+        this.loading = false;
+      })
     },
 
     deleteCharacter() {

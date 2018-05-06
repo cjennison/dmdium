@@ -5,7 +5,9 @@ import vueStore from './store'
 import Vuetify from 'vuetify'
 
 import ElementUI from 'element-ui';
+import locale from 'element-ui/lib/locale/lang/en'
 import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI, { locale })
 
 import './registerServiceWorker'
 import('../node_modules/vuetify/dist/vuetify.min.css')
@@ -13,6 +15,7 @@ import('../node_modules/vuetify/dist/vuetify.min.css')
 import AuthManager from '@/services/auth-manager'
 import scope from '@/services/scope'
 import { store, configureStore } from '@/services/HttpService'
+
 
 Vue.use(Vuetify)
 Vue.use(ElementUI)

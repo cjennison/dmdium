@@ -2,10 +2,11 @@
   #segments
     v-subheader Monsters for #[b &nbsp{{ campaign.name }}]
     v-layout
-      v-flex(xs2 offset-xs10)
+      v-flex(xs3 offset-xs9)
         v-spacer
+        v-btn(@click.native="toggleQuickAddDialog()") + Add Saved
         v-btn(:to="getCampaignBaseRoute() + '/monsters/new'") + Create New
-    v-layout(row wrap).pa-2()
+    v-layout(row wrap).pa-2(:loading="loading")
       v-flex.pa-2(xs6 v-for='monster in monsters')
         v-card.monster-card.pa-1
           v-card-media(:src="monster.image_url" height="300px")
@@ -34,6 +35,9 @@
             v-spacer
             v-btn(color='orange darken-1', flat='flat', @click.native='hideConfirmDeleteDialog()') Cancel
             v-btn(color='green darken-1', flat='flat', @click.native='deleteMonster()') Yes
+      v-dialog(v-model='quickAddToggled', max-width='350')
+        quick-add-form(assetType="Monster", @cancel='toggleQuickAddDialog', @select='addQuickAddMonster')
+        
 </template>
 
 <script>
@@ -41,13 +45,18 @@
 import { store, getHttpAdapter } from '@/services/HttpService';
 import scope from '@/services/scope';
 
+import QuickAddForm from '@/components/quick-add/QuickAddForm'
+
 export default {
   name: 'monsters',
+  components: { QuickAddForm },
   created() {
     this.getMonsters();
   },
   data() {
     return {
+      loading: false,
+      quickAddToggled: false,
       confirmDeleteDialog: false,
       confirmDeleteDialogTarget: null,
       monsters: [],
@@ -55,6 +64,10 @@ export default {
     }
   },
   methods: {
+    toggleQuickAddDialog() {
+      this.quickAddToggled = !this.quickAddToggled
+    },
+
     showConfirmDeleteDialog(monster) {
       this.confirmDeleteDialog = true
       this.confirmDeleteDialogTarget = monster
@@ -63,6 +76,22 @@ export default {
     hideConfirmDeleteDialog(monster) {
       this.confirmDeleteDialog = false
       this.confirmDeleteDialogTarget = null
+    },
+
+    addQuickAddMonster(monsterId) {
+      this.toggleQuickAddDialog();
+
+      this.loading = true;
+      store.create('asset', null, {
+        basePath: getHttpAdapter().resourceBasePath('campaigns', scope.current_campaign.id),
+        endpoint: 'monsters/' + monsterId
+      }).then((result) => {
+        this.getMonsters()
+      }).catch((err) => {
+        console.warn(err)
+      }).then(() => {
+        this.loading = false;
+      })
     },
 
     deleteMonster() {

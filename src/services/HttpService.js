@@ -53,6 +53,11 @@ store.defineMapper('segment', {
   endpoint: 'segments'
 })
 
+store.defineMapper('asset', {
+  name: 'asset',
+  endpoint: 'assets'
+})
+
 store.defineMapper('item', {
   name: 'item',
   endpoint: 'items'
